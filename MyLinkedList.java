@@ -1,11 +1,12 @@
 import java.io.* ;
 import java.util.* ;
 
-public class MyLinkedList<E>{
+public class MyLinkedList<E> {
+  //////// Start of Node class ////////////////////////////////
   public class Node {
     private E data ;
     private Node next, prev ;
-    // Constructor
+    // Constructors
     public Node(E d, Node p, Node n) {
       data = d ;
       next = n ;
@@ -26,6 +27,10 @@ public class MyLinkedList<E>{
     public Node prev() {
       return prev ;
     }
+    public boolean hasNext() {
+      if (next == null) return false ;
+      return true ;
+    }
     // mutators
     public E setData(E d) {
       data = d ;
@@ -42,7 +47,8 @@ public class MyLinkedList<E>{
       return fin ;
     }
   }
-  ///////////// END OF NODE CLASS //////////////////////
+  ///////////// END OF NODE CLASS ////////////////////////////////
+  ////////// START OF MYLINKEDLIST CLASS METHODS /////////////////
   private int length ;
   private Node start, end ;
   // Constructor
@@ -51,10 +57,23 @@ public class MyLinkedList<E>{
     start = new Node(null, null, null) ;
     end = new Node(null, null, null) ;
   }
+  public MyLinkedList(E[] a) {
+    	length = a.length ;
+    	if (a.length > 0){
+    		start = new Node(a[0]) ;
+    		Node current = start ;
+    		for (int i = 1 ; i < length ; i++) {
+    			current.setNext(new Node(a[i], current, null)) ;
+    			current = current.next() ;
+    		}
+    		end = current ;
+    	}
+    }
   // returns size
   public int size() {
     return length ;
   }
+  @SuppressWarnings("unchecked") 
   public void extend(MyLinkedList other){
         //in O(1) runtime (CONSTANT), move the elements from other onto the end of this
         //The size of other is reduced to 0
