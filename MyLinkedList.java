@@ -229,6 +229,9 @@ public class MyLinkedList<E> {
       return true ;
     }
   }
+  public E removeFront() {
+    return remove(0) ;
+  }
 
   // prints out the Linked List with the node(s)
   public String toString() {
