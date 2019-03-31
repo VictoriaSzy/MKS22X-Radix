@@ -73,7 +73,7 @@ public class MyLinkedList<E> {
   public int size() {
     return length ;
   }
-  @SuppressWarnings("unchecked") 
+  @SuppressWarnings("unchecked")
   public void extend(MyLinkedList other){
         //in O(1) runtime (CONSTANT), move the elements from other onto the end of this
         //The size of other is reduced to 0
@@ -125,7 +125,11 @@ public class MyLinkedList<E> {
     }
     return false ;
   }
-
+  public void clear() {
+    length = 0 ;
+		start = null ;
+    end = null ;
+	}
   // returns the index of the value
   // if the value is not in the Linked List --> -1
   public int indexOf(E value) {
