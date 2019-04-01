@@ -2,6 +2,15 @@ import java.io.* ;
 import java.util.* ;
 
 public class MyLinkedList<E> {
+  public static void main(String[] args) {
+    System.out.println("Testing creating a MyLinkedList!") ;
+    MyLinkedList<Integer> a = new MyLinkedList<Integer>() ;
+    System.out.println(a.toString()) ;
+    if (a.size() == 0) System.out.println("The size should be 0 and it is!") ;
+    else {
+      System.out.println("There is an error in either creating the MyLinkedList or in retrieving the size!") ;
+    }
+  }
   //////// Start of Node class ////////////////////////////////
   public class Node {
     private E data ;
