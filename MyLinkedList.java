@@ -10,6 +10,12 @@ public class MyLinkedList<E> {
     else {
       System.out.println("There is an error in either creating the MyLinkedList or in retrieving the size!") ;
     }
+    int[] d = {1, 2, 3, 4, 5, 11, 111, 53, 6} ;
+    for (int i = 0 ; i < 9 ; i++) {
+      System.out.println("Let's add " + d[i] + " to a.") ;
+      a.add(d[i]) ;
+    }
+    System.out.println("After adding here is how it looks: \n" + a.toString()) ;
   }
   //////// Start of Node class ////////////////////////////////
   public class Node {
