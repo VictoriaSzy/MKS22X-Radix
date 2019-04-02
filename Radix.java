@@ -10,11 +10,31 @@ public class Radix {
   @SuppressWarnings("unchecked")
   public static void radixsort(int[]data) {
     MyLinkedList<Integer>[] buckets = new MyLinkedList[10] ;
-    int maxNumOfDigits = (int) maxDigits(data) ;
-    for (int i : data) {
-      // thinking of storing it in either an array or MyLinkedList
+    int maxNumOfDigits = (int) maxDigits(data) + 1 ;
+    int a = 0 ; // this will represent the digit that we are looking at
+    while (a < maxNumOfDigits) {
+      // for testing purposes
+      String place = "" ;
+      if (a == 0) place = "ones" ;
+      if (a == 1) place = "tens" ;
+      if (a == 2) place = "hundreds" ;
+      if (a == 3) place = "thousands" ;
+      if (a == 4) place = "ten thousands" ;
+      if (a == 5) place = "hundred thousands" ;
+      if (a == 6) place = "millions" ;
+      if (a == 7) place = "ten millions" ;
+      if (a == 8) place = "hundred millions" ;
+      if (a == 9) place = "billions" ;
+      System.out.println("We are checking the " + place + " place value now!") ;
+      for (int i : data) {
+        int digit ;
+        if (i < maxNumOfDigits * 10) {
+          // we're looking at one of the smaller values
+          digit = 0 ;
+        }
+      }
     }
-    for (int a = 0 ; a < maxDigits(data) ; a++) {
+    for (int aa = 0 ; aa < maxDigits(data) ; aa++) {
       for (int b = 0 ; b < data.length ; b++) {
 
       }
