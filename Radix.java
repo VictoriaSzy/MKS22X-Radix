@@ -27,16 +27,18 @@ public class Radix {
       if (a == 9) place = "billions" ;
       System.out.println("We are checking the " + place + " place value now!") ;
       for (int i : data) {
-        int digit ;
-        if (i < maxNumOfDigits * 10) {
+        // int digit ;
+        //if (i < maxNumOfDigits * 10) {
           // we're looking at one of the smaller values
-          digit = 0 ;
-        }
+          //digit = 0 ;
+        //}
+        int digit = i % 10 ;
+        buckets[digit].add(i) ;
+        i = i / 10 ; // for the future
       }
-    }
-    for (int aa = 0 ; aa < maxDigits(data) ; aa++) {
-      for (int b = 0 ; b < data.length ; b++) {
-
+      // now we have to clear out the buckets after copying it back
+      for (MyLinkedList c : buckets) {
+        c.clear() ;
       }
     }
   }
