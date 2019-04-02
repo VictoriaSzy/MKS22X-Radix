@@ -1,9 +1,12 @@
+import java.util.* ;
+import java.io.* ;
+
 public class Radix {
   public static void radixsort(int[]data) {
-    MyDeque[] digitsTracker = new MyDeque[19] ;
-    for (int i : data) {
-      int ones = i % 10 ;
-
-    }
+    ArrayList<MyLinkedList<Integer>> buckets = new ArrayList<MyLinkedList<Integer>>() ;
+    int maxNumOfDigits = maxDigits(data) ;
+  }
+  public static int maxDigits(int[] d) {
+    return 0 ;
   }
 }
