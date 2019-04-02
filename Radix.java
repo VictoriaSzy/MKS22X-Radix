@@ -6,6 +6,10 @@ public class Radix {
     int[] a = {1, 3, 5, 83, 256, 7226, 1, 6263622} ;
     System.out.println(Arrays.toString(a)) ;
     System.out.println("Max # of digits expected is 7 and we got: " + (int) maxDigits(a)) ;
+    System.out.println("We are going to test the radix sort now: \n*******************************************************************************") ;
+    radixsort(a) ;
+    System.out.println("*******************************************************************************") ;
+    System.out.println(Arrays.toString(a)) ;
   }
   @SuppressWarnings("unchecked")
   public static void radixsort(int[]data) {
@@ -44,12 +48,23 @@ public class Radix {
           buckets[digit].add(i) ; // add it to the appropriate bucket
         }
       }
-      // now we have finished with adding the values to the bucket
+      // now we have finished with adding the values to the bucket and need to transfer them to the array
+      int bucketsCounter = 0 ;
+      for (int i : data) {
+        int val = buckets[bucketsCounter].removeFront() ;
+        int el = val ;
+        for (int v = buckets[bucketsCounter].removeFront() ; v == null ; bucketsCounter++) {
+          // then we move on to the next bucket available but we need to find it
+          el = v ;
+        }
+        i = el ;
+      }
       // now we have to clear out the buckets after copying it back
       for (MyLinkedList c : buckets) {
         c.clear() ;
       }
       // now we can move on to the next digit if there is one
+      a++ ;
     }
   }
   public static double maxDigits(int[] d) {
