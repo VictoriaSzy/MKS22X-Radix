@@ -32,14 +32,24 @@ public class Radix {
           // we're looking at one of the smaller values
           //digit = 0 ;
         //}
-        int digit = i % 10 ;
-        buckets[digit].add(i) ;
-        i = i / 10 ; // for the future
+        int digit = i % (int) Math.pow(10, a + 1) ;
+        digit = digit / (int) Math.pow(10, a) ;
+        System.out.println("The digit that we got is: " + digit) ;
+        if (digit > 9) {
+          System.out.println("There's an error! The digit found can't be used!!") ;
+          System.out.println("We were looking at: " + i) ;
+          System.exit(1) ;
+        }
+        else {
+          buckets[digit].add(i) ; // add it to the appropriate bucket
+        }
       }
+      // now we have finished with adding the values to the bucket
       // now we have to clear out the buckets after copying it back
       for (MyLinkedList c : buckets) {
         c.clear() ;
       }
+      // now we can move on to the next digit if there is one
     }
   }
   public static double maxDigits(int[] d) {
