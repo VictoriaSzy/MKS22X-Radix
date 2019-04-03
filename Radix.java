@@ -14,7 +14,7 @@ public class Radix {
   @SuppressWarnings("unchecked")
   public static void radixsort(int[]data) {
     MyLinkedList<Integer>[] buckets = new MyLinkedList[10] ;
-    int maxNumOfDigits = (int) maxDigits(data) + 1 ;
+    int maxNumOfDigits = (int) maxDigits(data) ;
     int a = 0 ; // this will represent the digit that we are looking at
     while (a < maxNumOfDigits) {
       // for testing purposes
@@ -70,10 +70,11 @@ public class Radix {
   public static double maxDigits(int[] d) {
     double max = 0 ;
     for (int i : d) {
-      if (Math.log(i) / 2 > max) {
+      //if ((Math.log10(i) + 1) > max) {
         // i has a greater number of digits than max
-        max = Math.log(i) / 2 ;
-      }
+        //max = (Math.log10(i) + 1) ;
+      //}
+      if (String.valueOf(i).length() > max) max = String.valueOf(i).length() ;
     }
     return max ;
   }
