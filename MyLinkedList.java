@@ -1,7 +1,7 @@
 import java.io.* ;
 import java.util.* ;
 
-public class MyLinkedList<E> {
+public class MyLinkedList<E> implements Iterable<E>{
   public static void main(String[] args) {
     System.out.println("Testing creating a MyLinkedList!") ;
     MyLinkedList<Integer> a = new MyLinkedList<Integer>() ;
@@ -63,6 +63,23 @@ public class MyLinkedList<E> {
     }
   }
   ///////////// END OF NODE CLASS ////////////////////////////////
+  ///////////// START OF ITERATOR CLASS ////////////////
+  public class Iter implements Iterator<E> {
+        Node current = null ;
+        public Iter(MyLinkedList<E> a) {
+            current = a.start ;
+        }
+        public boolean hasNext() {
+            return current != null ;
+        }
+
+        public E next() {
+            E a = current.data ;
+            current = current.next ;
+            return a ;
+        }
+    }
+    /////////// END OF ITERATOR CLASS //////////////////////////
   ////////// START OF MYLINKEDLIST CLASS METHODS /////////////////
   private int length ;
   private Node start, end ;
@@ -84,6 +101,9 @@ public class MyLinkedList<E> {
     		end = current ;
     	}
     }
+  public Iterator<E> iterator() {
+    return new Iter(this) ;
+  }
   // returns size
   public int size() {
     return length ;
