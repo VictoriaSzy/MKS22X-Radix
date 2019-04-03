@@ -49,15 +49,20 @@ public class Radix {
         }
       }
       // now we have finished with adding the values to the bucket and need to transfer them to the array
-      int bucketsCounter = 0 ;
-      for (int i : data) {
-        int val = buckets[bucketsCounter].removeFront() ;
+      //int bucketsCounter = 0 ;
+      MyLinkedList<Integer> merged = new MyLinkedList<Integer>() ;
+      for (MyLinkedList<Integer> i : buckets) {
+        merged.extend(i) ;
+        /*int val = buckets[bucketsCounter].removeFront() ;
         int el = val ;
         for (int v = buckets[bucketsCounter].removeFront() ; v == null ; bucketsCounter++) {
           // then we move on to the next bucket available but we need to find it
           el = v ;
         }
-        i = el ;
+        i = el ;*/
+      }
+      for (int i = 0 ; i < data.length ; i++) {
+        data[i] = merged.removeFront() ;
       }
       // now we have to clear out the buckets after copying it back
       for (MyLinkedList c : buckets) {
