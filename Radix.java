@@ -1,86 +1,103 @@
 import java.util.* ;
 import java.io.* ;
+@SuppressWarnings("unchecked")
 
 public class Radix {
-  public static void main(String[] args) {
-    int[] a = {1, 3, 5, 83, 256, 7226, 1, 6263622} ;
-    System.out.println(Arrays.toString(a)) ;
-    System.out.println("Max # of digits expected is 7 and we got: " + (int) maxDigits(a)) ;
-    System.out.println("We are going to test the radix sort now: \n*******************************************************************************") ;
-    radixsort(a) ;
-    System.out.println("*******************************************************************************") ;
-    System.out.println(Arrays.toString(a)) ;
+  public static void main(String[]args){
+  System.out.println("Size\t\tMax Value\tquick/builtin ratio ");
+  int[]MAX_LIST = {1000000000,500,10};
+  for(int MAX : MAX_LIST){
+    for(int size = 31250; size < 2000001; size*=2){
+      long rtime=0;
+      long btime=0;
+      //average of 5 sorts.
+      for(int trial = 0 ; trial <=5; trial++){
+        int []data1 = new int[size];
+        int []data2 = new int[size];
+        for(int i = 0; i < data1.length; i++){
+          data1[i] = (int)(Math.random()*MAX);
+          data2[i] = data1[i];
+        }
+        long t1,t2;
+        t1 = System.currentTimeMillis();
+        Radix.radixsort(data2);
+        t2 = System.currentTimeMillis();
+        rtime += t2 - t1;
+        t1 = System.currentTimeMillis();
+        Arrays.sort(data1);
+        t2 = System.currentTimeMillis();
+        btime+= t2 - t1;
+        if(!Arrays.equals(data1,data2)){
+          System.out.println("FAIL TO SORT!");
+          System.exit(0);
+        }
+      }
+      System.out.println(size +"\t\t"+MAX+"\t"+1.0*rtime/btime);
+    }
+    System.out.println();
   }
-  @SuppressWarnings("unchecked")
-  public static void radixsort(int[]data) {
-    MyLinkedList<Integer>[] buckets = new MyLinkedList[10] ;
-    int maxNumOfDigits = (int) maxDigits(data) ;
-    int a = 0 ; // this will represent the digit that we are looking at
-    while (a < maxNumOfDigits) {
-      // for testing purposes
-      String place = "" ;
-      if (a == 0) place = "ones" ;
-      if (a == 1) place = "tens" ;
-      if (a == 2) place = "hundreds" ;
-      if (a == 3) place = "thousands" ;
-      if (a == 4) place = "ten thousands" ;
-      if (a == 5) place = "hundred thousands" ;
-      if (a == 6) place = "millions" ;
-      if (a == 7) place = "ten millions" ;
-      if (a == 8) place = "hundred millions" ;
-      if (a == 9) place = "billions" ;
-      System.out.println("We are checking the " + place + " place value now!") ;
-      for (int i : data) {
-        // int digit ;
-        //if (i < maxNumOfDigits * 10) {
-          // we're looking at one of the smaller values
-          //digit = 0 ;
-        //}
-        int digit = i % (int) Math.pow(10, a + 1) ;
-        digit = digit / (int) Math.pow(10, a) ;
-        System.out.println("The digit that we got is: " + digit) ;
-        if (digit > 9) {
-          System.out.println("There's an error! The digit found can't be used!!") ;
-          System.out.println("We were looking at: " + i) ;
-          System.exit(1) ;
-        }
-        else {
-          buckets[digit].add(i) ; // add it to the appropriate bucket
-        }
+}
+
+  public static void radixsort(int[] data){
+    MyLinkedList<Integer>[] lis = new MyLinkedList[20] ;
+    for (int i = 0 ; i < lis.length ; i++) {
+      lis[i] = new MyLinkedList<Integer>() ;
+    }
+    MyLinkedList<Integer> extended = new MyLinkedList<Integer>() ;
+    int numOfPasses = calculatePasses(data) ;
+    for (int i = 0 ; i < numOfPasses + 1 ; i++){
+      if (i == 0) roundOne(data, lis) ;
+      else {
+        makeBuckets(i, extended, lis) ;
       }
-      // now we have finished with adding the values to the bucket and need to transfer them to the array
-      //int bucketsCounter = 0 ;
-      MyLinkedList<Integer> merged = new MyLinkedList<Integer>() ;
-      for (MyLinkedList<Integer> i : buckets) {
-        merged.extend(i) ;
-        /*int val = buckets[bucketsCounter].removeFront() ;
-        int el = val ;
-        for (int v = buckets[bucketsCounter].removeFront() ; v == null ; bucketsCounter++) {
-          // then we move on to the next bucket available but we need to find it
-          el = v ;
-        }
-        i = el ;*/
+      extended.clear() ;
+      for (int x = 0 ; x < lis.length ; x++){
+        extended.extend(lis[x]) ;
       }
-      for (int i = 0 ; i < data.length ; i++) {
-        data[i] = merged.removeFront() ;
-      }
-      // now we have to clear out the buckets after copying it back
-      for (MyLinkedList c : buckets) {
-        c.clear() ;
-      }
-      // now we can move on to the next digit if there is one
-      a++ ;
+    }
+    Node<Integer> no = extended.start() ;
+    data[0] = no.getData() ;
+    int i = 1 ;
+    while (no.hasNext()) {
+      no = no.next() ;
+      data[i] = no.getData() ;
+      i++ ;
     }
   }
-  public static double maxDigits(int[] d) {
-    double max = 0 ;
-    for (int i : d) {
-      //if ((Math.log10(i) + 1) > max) {
-        // i has a greater number of digits than max
-        //max = (Math.log10(i) + 1) ;
-      //}
-      if (String.valueOf(i).length() > max) max = String.valueOf(i).length() ;
+
+  private static int calculatePasses(int[] data) {
+    int max = max(data) ;
+    if (max == 0) return 0 ;
+    String str = "" + max ;
+    return str.length() - 1 ;
+  }
+
+  private static int max(int[] data) {
+    if (data.length == 0) return 0 ;
+    int max = 0 ;
+    for (int i = 0 ; i < data.length ; i++) {
+      if (data[i] > max) max = data[i] ;
     }
     return max ;
+  }
+  // for the first time that we make and use the buckets
+  private static void roundOne(int[] data, MyLinkedList<Integer>[] lis){
+    for (int i = 0 ; i < data.length ; i++) {
+      int n = data[i] ;
+      int digit = n % 10 ;
+      lis[digit + 9].add(n) ;
+    }
+  }
+  private static void makeBuckets(int i, MyLinkedList<Integer> data, MyLinkedList<Integer>[] lis) {
+    Node<Integer> node = data.start() ;
+    int n = node.getData() ;
+    int digit = n / (int) Math.pow(10, i) % 10 ; // similar to what I did before but it's more organized now
+    lis[digit + 9].add(n) ;
+    while (node.hasNext()) {
+      node = node.next() ;
+      n = node.getData() ;
+      digit = n / (int) Math.pow(10, i) % 10 ;
+      lis[digit + 9].add(n) ;
+    }
   }
 }
