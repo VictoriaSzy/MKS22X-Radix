@@ -1,7 +1,7 @@
 import java.util.* ;
 import java.io.* ;
-@SuppressWarnings("unchecked")
 
+@SuppressWarnings("unchecked")
 public class Radix {
   public static void main(String[]args){
   System.out.println("Size\t\tMax Value\tquick/builtin ratio ");
@@ -37,25 +37,24 @@ public class Radix {
     System.out.println();
   }
 }
-
-  public static void radixsort(int[] data){
+public static void radixsort(int[] data){
     MyLinkedList<Integer>[] lis = new MyLinkedList[20] ;
     for (int i = 0 ; i < lis.length ; i++) {
       lis[i] = new MyLinkedList<Integer>() ;
     }
-    MyLinkedList<Integer> extended = new MyLinkedList<Integer>() ;
+    MyLinkedList<Integer> merging = new MyLinkedList<Integer>() ;
     int numOfPasses = calculatePasses(data) ;
     for (int i = 0 ; i < numOfPasses + 1 ; i++){
       if (i == 0) roundOne(data, lis) ;
       else {
-        makeBuckets(i, extended, lis) ;
+        makeBuckets(i, merging, lis) ;
       }
-      extended.clear() ;
+      merging.clear() ;
       for (int x = 0 ; x < lis.length ; x++){
-        extended.extend(lis[x]) ;
+        merging.extend(lis[x]) ;
       }
     }
-    Node<Integer> no = extended.start() ;
+    Node<Integer> no = merging.start() ;
     data[0] = no.getData() ;
     int i = 1 ;
     while (no.hasNext()) {
