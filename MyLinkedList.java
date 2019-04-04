@@ -28,7 +28,7 @@ public class MyLinkedList<E> {
     start = new Node(null, null, null) ;
     end = new Node(null, null, null) ;
   }
-  public MyLinkedList(E[] a) {       
+  public MyLinkedList(E[] a) {
     	length = a.length ;
     	if (a.length > 0){
     		start = new Node(a[0]) ;
@@ -50,7 +50,6 @@ public class MyLinkedList<E> {
   public int size() {
     return length ;
   }
-  @SuppressWarnings("unchecked")
   public void extend(MyLinkedList other){
         //in O(1) runtime (CONSTANT), move the elements from other onto the end of this
         //The size of other is reduced to 0
